@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class AdunblockServerTagExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         // Register the Twig extension
         $definition = new Definition(AdunblockExtension::class);
@@ -19,7 +19,7 @@ class AdunblockServerTagExtension extends Extension
             new Reference('cache.app')
         ]);
         $definition->addTag('twig.extension');
-        
+
         $container->setDefinition('adunblock.server_tag.twig_extension', $definition);
     }
 }
