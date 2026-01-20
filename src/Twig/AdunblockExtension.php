@@ -33,22 +33,14 @@ class AdunblockExtension extends AbstractExtension
             try {
                 $response = $this->httpClient->request('GET', $remoteUrl);
                 $data = $response->toArray();
-                // New format: API returns array directly instead of object with js property
-                if (is_array($data) && !isset($data['js'])) {
-                    // New format: array directly
-                    $jsFiles = ['js' => $data];
-                } elseif (is_array($data) && isset($data['js'])) {
-                    // Old format: object with js property (backward compatibility)
-                    $jsFiles = $data;
-                } else {
-                    $jsFiles = ['js' => []];
-                }
+                // Ensure we have an array
+                $jsFiles = is_array($data) ? $data : [];
                 $cacheItem->set($jsFiles);
                 $cacheItem->expiresAfter($cacheInterval);
                 $this->cache->save($cacheItem);
             } catch (\Exception $e) {
                 // Log the error or handle it as needed
-                $jsFiles = ['js' => []];
+                $jsFiles = [];
             }
         } else {
             $jsFiles = $cacheItem->get();
@@ -60,7 +52,7 @@ class AdunblockExtension extends AbstractExtension
 
         $scripts = array_map(function ($src) {
             return sprintf('<script src="%s" async></script>', htmlspecialchars($src, ENT_QUOTES, 'UTF-8'));
-        }, $jsFiles['js'] ?? []);
+        }, $jsFiles);
 
         return implode("\n", $scripts);
     }
