@@ -34,7 +34,19 @@
     "symfony/cache": "^5.0|^6.0|^7.0|^8.0",
     "symfony/dependency-injection": "^5.0|^6.0|^7.0|^8.0",
     "symfony/http-kernel": "^5.0|^6.0|^7.0|^8.0",
+    "symfony/http-foundation": "^5.0|^6.0|^7.0|^8.0",
     "twig/twig": "^2.0|^3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5|^10.0|^11.0"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AdUnblock\\ServerTag\\Symfony\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
   },
   "minimum-stability": "stable",
   "prefer-stable": true
